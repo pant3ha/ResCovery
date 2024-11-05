@@ -30,8 +30,8 @@ class RestaurantViewModel(private val restaurantRepository: RestaurantRepository
         return restaurantRepository.getAllRestaurants().asLiveData()
     }
 
-    fun getRestaurantById(restaurantId: Long) : LiveData<List<Restaurant>> {
-        return restaurantRepository.getRestaurantById(restaurantId).asLiveData()
+    fun getRestaurantById(restaurantId: Long) : Restaurant? {
+        return restaurantRepository.getRestaurantById(restaurantId)
     }
 
     fun insertRestaurant(restaurant: Restaurant) {
