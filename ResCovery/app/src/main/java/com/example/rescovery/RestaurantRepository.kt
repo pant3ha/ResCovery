@@ -18,7 +18,7 @@ class RestaurantRepository(private val restaurantDatabaseDao: RestaurantDatabase
         return restaurantDatabaseDao.getAllRestaurants()
     }
 
-    fun getRestaurantById(restaurantId: Long): Flow<List<Restaurant>> {
+    fun getRestaurantById(restaurantId: Long): Restaurant? {
         return restaurantDatabaseDao.getRestaurantById(restaurantId)
     }
 

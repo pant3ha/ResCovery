@@ -13,10 +13,10 @@ interface RestaurantDatabaseDao {
     suspend fun insert(restaurant: Restaurant)
 
     @Query("SELECT * FROM restaurant_table")
-    suspend fun getAllRestaurants(): Flow<List<Restaurant>> //for MAP
+    fun getAllRestaurants(): Flow<List<Restaurant>> //for MAP
 
     @Query("SELECT * FROM restaurant_table WHERE id = :restaurantId")
-    suspend fun getRestaurantById(restaurantId: Long): Restaurant?
+    fun getRestaurantById(restaurantId: Long): Restaurant?
 
     @Update
     suspend fun update(restaurant: Restaurant)
