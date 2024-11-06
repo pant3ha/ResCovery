@@ -9,21 +9,21 @@
     <item
         android:id="@+id/navigation_favorite"
         android:icon="@drawable/favorite"
-        android:title="Favorite" />
+        android:title="@string/title_favorite" />
 
     <item
         android:id="@+id/navigation_add"
         android:icon="@drawable/add"
-        android:title="Add" />
+        android:title="@string/title_add" />
 
     <item
         android:id="@+id/navigation_message"
         android:icon="@drawable/message"
-        android:title="Message" />
+        android:title="@string/title_message" />
 
     <item
-        android:id="@+id/navigation_user"
-        android:icon="@drawable/user"
-        android:title="User" />
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/profile"
+        android:title="@string/title_profile" />
 
 </menu>
