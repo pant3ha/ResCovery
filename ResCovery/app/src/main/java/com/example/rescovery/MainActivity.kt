@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.rescovery.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -38,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_add, R.id.navigation_message, R.id.navigation_profile
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         //____ Database Stuff___//
