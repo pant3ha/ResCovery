@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         //____ Database Stuff___//
-        restaurantViewModel = ViewModelProvider(this).get(RestaurantViewModel::class.java)
-        insertData()
+//        restaurantViewModel = ViewModelProvider(this).get(RestaurantViewModel::class.java)
+//        insertData()
     }
 
     private fun insertData() {
