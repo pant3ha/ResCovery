@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity() {
                 restaurantName = "Gawon Express Korean Cuisine",
                 restaurantAddress = "8968 University High St, Burnaby, BC V5A 0B3",
                 coordinates = "49.278096392460284, -122.91148196448898",
-                overallRating = 0.0, //to be calculated
+                overallRating = 5.0, //to be calculated
                 description = "Korean restaurant",
                 priceRange = "10-20",
                 phoneNumber = "(604)298-2925",
