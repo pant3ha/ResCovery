@@ -6,7 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Restaurant::class, UserInput::class], version = 1)
+//@Database(entities = [Restaurant::class, UserInput::class], version = 1)
 abstract class RestaurantDatabase : RoomDatabase() {
     abstract val restaurantDatabaseDao: RestaurantDatabaseDao
     abstract val userInputDao: UserInputDao
