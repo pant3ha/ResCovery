@@ -15,6 +15,9 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var restaurantViewModel: RestaurantViewModel //for manually entering list of restaurants
+    private lateinit var restaurantRepository: RestaurantRepository
+    private lateinit var userInputRepository: UserInputRepository
+    private lateinit var appDatabase: AppDatabase
 
 
     private lateinit var binding: ActivityMainBinding
@@ -39,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         //____ Database Stuff___//
-        restaurantViewModel = ViewModelProvider(this).get(RestaurantViewModel::class.java)
+        appDatabase = AppDatabase.getInstance(this)
+        restaurantRepository = RestaurantRepository(appDatabase.restaurantDatabaseDao)
+        userInputRepository = UserInputRepository(appDatabase.userInputDao, appDatabase.restaurantDatabaseDao)
+        val factory = RestaurantFactory(restaurantRepository, userInputRepository)
+        restaurantViewModel = ViewModelProvider(this, factory).get(RestaurantViewModel::class.java)
         insertData()
     }
 

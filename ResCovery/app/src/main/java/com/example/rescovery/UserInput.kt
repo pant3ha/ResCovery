@@ -1,3 +1,4 @@
+package com.example.rescovery
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo

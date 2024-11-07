@@ -1,6 +1,5 @@
 package com.example.rescovery
 
-import UserInput
 import android.icu.text.UnicodeSet
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
