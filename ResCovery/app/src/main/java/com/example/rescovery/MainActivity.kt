@@ -1,5 +1,6 @@
 package com.example.rescovery
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -34,10 +35,25 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_add, R.id.navigation_message, R.id.navigation_profile
+                R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_message, R.id.navigation_profile
             )
         )
         navView.setupWithNavController(navController)
+
+        // Handle Add Activity
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_add -> {
+                    val intent = Intent(this, AddPostActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> {
+                    navController.navigate(item.itemId)
+                    true
+                }
+            }
+        }
 
         //____ Database Stuff___//
         appDatabase = AppDatabase.getInstance(this)
