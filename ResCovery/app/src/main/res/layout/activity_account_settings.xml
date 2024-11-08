@@ -138,12 +138,24 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/profile_delete_btn"
+        android:id="@+id/profile_logout_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/profile_delete_btn"
         android:background="@color/blue"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:text="Logout"/>
+
+    <Button
+        android:id="@+id/profile_delete_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/red"
         android:textColor="@color/white"
         android:textSize="18dp"
         android:text="Delete Account"/>

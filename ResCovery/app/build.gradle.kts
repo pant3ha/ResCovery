@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.annotation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

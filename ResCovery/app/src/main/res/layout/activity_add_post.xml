@@ -70,7 +70,7 @@
             android:scrollbars="vertical"
             android:paddingVertical="8dp"
             android:paddingHorizontal="16dp"
-            android:background="@drawable/edit_text_border"
+            android:background="@drawable/rounded_black_corner"
             android:hint="Share details of your own experience at this place"/>
 
         <LinearLayout
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/edit_text_border"
+            android:background="@drawable/rounded_black_corner"
             android:orientation="vertical">
 
             <ImageView
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/blue"
+        android:background="@drawable/rounded_corner_bluefilled"
         android:textColor="@color/white"
         android:textSize="18dp"
         android:text="Submit"/>
