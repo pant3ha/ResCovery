@@ -68,11 +68,11 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/user_id"
+                android:id="@+id/user_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="ID:123456789"
+                android:text="username"
                 android:textSize="13dp" />
 
             <TextView
