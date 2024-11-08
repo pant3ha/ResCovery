@@ -49,7 +49,9 @@
         android:layout_marginTop="15dp"
         android:layout_below="@id/profile_toolbar"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/profile" />
+        android:src="@drawable/profile"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="1dp"/>
 
     <TextView
         android:id="@+id/edit_picture_text_btn"
@@ -143,10 +145,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_above="@id/profile_delete_btn"
-        android:background="@color/blue"
+        android:background="@drawable/rounded_corner_bluefilled"
         android:textColor="@color/white"
         android:textSize="18dp"
-        android:text="Logout"/>
+        android:text="Log Out"/>
 
     <Button
         android:id="@+id/profile_delete_btn"
@@ -155,8 +157,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/red"
-        android:textColor="@color/white"
+        android:background="@drawable/rounded_black_corner"
+        android:textColor="@color/red"
         android:textSize="18dp"
         android:text="Delete Account"/>
 </RelativeLayout>
