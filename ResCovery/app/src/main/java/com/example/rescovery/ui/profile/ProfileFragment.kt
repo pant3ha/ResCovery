@@ -1,5 +1,6 @@
 package com.example.rescovery.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.rescovery.AccountSettingsActivity
 import com.example.rescovery.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -27,6 +29,12 @@ class ProfileFragment : Fragment() {
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // Go to Edit Profile when button clicked
+        binding.editProfile.setOnClickListener {
+            val intent = Intent(context, AccountSettingsActivity::class.java)
+            startActivity(intent)
+        }
 
         return root
     }
