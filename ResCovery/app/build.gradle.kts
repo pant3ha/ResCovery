@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt") //XD added
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -69,4 +70,9 @@ dependencies {
 
     // Circular ImageView for Profile image
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database:21.0.0")
 }
