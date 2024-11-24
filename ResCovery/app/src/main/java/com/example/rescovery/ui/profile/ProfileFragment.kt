@@ -45,6 +45,7 @@ class ProfileFragment : Fragment() {
         val username = currentUserPref.getString(Globals.PREF_CUR_USER_KEY, "").toString()
 
         usersRef.child(username).get().addOnSuccessListener { snapshot ->
+            binding.userName.text = snapshot.child("fullName").value.toString()
             binding.userUsername.text = "@" + username
         }.addOnFailureListener {
             Toast.makeText(requireActivity(), "Failed to access database", Toast.LENGTH_SHORT).show()
