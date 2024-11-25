@@ -48,8 +48,19 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="25dp"
-            android:text="Restaurant Name"/>
+            android:textSize="25sp"
+            android:text="Post Review"/>
+
+        <Spinner
+            android:id="@+id/add_post_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textAlignment="center"
+            android:baselineAligned="false"
+            android:entries="@array/restaurant_names_spinner"
+            android:focusable="false">
+        </Spinner>
 
         <RatingBar
             android:id="@+id/add_post_ratingBar"
@@ -94,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:text="photo 0/5"/>
+                android:text="Add Photo"/>
         </LinearLayout>
 
     </LinearLayout>

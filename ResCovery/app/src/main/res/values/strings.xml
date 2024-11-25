@@ -14,4 +14,28 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string-array name="restaurant_names_spinner">
+        <item>Select Restaurant</item>
+        <item>A&amp;W Canada</item>
+        <item>Bamboo Garden Restaurant</item>
+        <item>BierCraft UniverCity</item>
+        <item>Chef Hung Taiwanese Beef Noodle</item>
+        <item>Donair Town</item>
+        <item>Gawon Express Korean Cuisine</item>
+        <item>Japarrito</item>
+        <item>Mad Chicken SFU</item>
+        <item>Noodle Waffle Cafe</item>
+        <item>PHO 99</item>
+        <item>Pizza Hut</item>
+        <item>Plum Garden &amp; CHAKURA</item>
+        <item>Quesada Burritos &amp; Tacos</item>
+        <item>SFU Dining Commons</item>
+        <item>Steve\'s Poke Bar</item>
+        <item>Subway</item>
+        <item>Tim Hortons</item>
+        <item>Togo Sushi SFU</item>
+        <item>Uncle Faith\'s Pizza</item>
+    </string-array>
+
 </resources>
