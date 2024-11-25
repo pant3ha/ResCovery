@@ -15,7 +15,10 @@ import com.example.rescovery.AppDatabase
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.google.gson.Gson
+<<<<<<< HEAD
 import org.w3c.dom.Comment
+=======
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
 
 
 class RestaurantFragment : Fragment() {
@@ -23,7 +26,10 @@ class RestaurantFragment : Fragment() {
     private lateinit var closeBtn: Button
     private lateinit var imageAdapter: RestaurantImageAdapter
     private lateinit var recycler: RecyclerView
+<<<<<<< HEAD
     private lateinit var textRecycler: RecyclerView
+=======
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
     private lateinit var restaurantViewModel: RestaurantViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +37,10 @@ class RestaurantFragment : Fragment() {
         arguments?.let {
             restaurant = it.getParcelable(ARG_RESTAURANT)!!
         }
+<<<<<<< HEAD
         Log.d("RestaurantFragment", "Received restaurant: $restaurant")
+=======
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
     }
 
     override fun onCreateView(
@@ -42,6 +51,7 @@ class RestaurantFragment : Fragment() {
         recycler = view.findViewById(R.id.image_scroll)
         recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+<<<<<<< HEAD
         textRecycler = view.findViewById(R.id.comments)
         textRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -82,6 +92,15 @@ class RestaurantFragment : Fragment() {
             imageAdapter = RestaurantImageAdapter(imageUrls)
             recycler.adapter = imageAdapter
         }*/
+=======
+        //get images from uerInputs and from default restaurant images
+        val userInputDao = AppDatabase.getInstance(requireContext()).userInputDao
+        restaurantViewModel = RestaurantViewModel(userInputDao)
+        restaurantViewModel.getImagesForRestaurant(restaurant) { imageUrls ->
+            imageAdapter = RestaurantImageAdapter(imageUrls)
+            recycler.adapter = imageAdapter
+        }
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
         //imageAdapter = RestaurantImageAdapter(parseImageUrls(restaurant.imageUrls))
         //recycler.adapter = imageAdapter
         view.findViewById<TextView>(R.id.name).text = restaurant.restaurantName
@@ -111,8 +130,12 @@ class RestaurantFragment : Fragment() {
         return view
     }
 
+<<<<<<< HEAD
     //not needed anymore
     /*private fun parseImageUrls(jsonString: String): List<String> {
+=======
+    private fun parseImageUrls(jsonString: String): List<String> {
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
         if (jsonString.isNullOrEmpty()) {
             return emptyList() // Return an empty list if JSON string is null or empty
         }
@@ -123,7 +146,11 @@ class RestaurantFragment : Fragment() {
             emptyList()
         }
 
+<<<<<<< HEAD
     }*/
+=======
+    }
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
 
     companion object {
         private const val ARG_RESTAURANT = "arg_restaurant"

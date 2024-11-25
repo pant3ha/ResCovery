@@ -1,10 +1,16 @@
 package com.example.rescovery.ui.home.fragments
 
+<<<<<<< HEAD
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
+=======
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.rescovery.Restaurant
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
 import com.example.rescovery.UserInputDao
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.firstOrNull
@@ -12,6 +18,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
 class RestaurantViewModel (private val userInputDao: UserInputDao) : ViewModel() {
+<<<<<<< HEAD
     fun getUserInputsForRestaurant(restaurantId: Long, onResult: (List<UserInput>) -> Unit) {
         viewModelScope.launch {
             val userInputs = userInputDao.getAllUserInputsForRestaurant(restaurantId).firstOrNull()
@@ -27,6 +34,12 @@ class RestaurantViewModel (private val userInputDao: UserInputDao) : ViewModel()
             } else { Log.d("RestaurantViewModel", "User inputs fetched: $userInputs") }
             val userImages = userInputs?.mapNotNull { it.userInput.photoUri } ?: emptyList()
             Log.d("RestaurantViewModel", "User images extracted: $userImages")
+=======
+    fun getImagesForRestaurant(restaurant: Restaurant, onResult: (List<String>) -> Unit) {
+        viewModelScope.launch {
+            val userInputs = userInputDao.getAllUserInputsForRestaurant(restaurant.id).firstOrNull()
+            val userImages = userInputs?.mapNotNull { it.userInput.photoUri } ?: emptyList()
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
             onResult(userImages)
         }
     }

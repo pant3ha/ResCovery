@@ -4,7 +4,9 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "restaurant_table")
 data class Restaurant (
     @PrimaryKey(autoGenerate = true)
@@ -30,4 +32,7 @@ data class Restaurant (
 
     @ColumnInfo(name = "phone_number")
     var phoneNumber: String = "",
-    )
+
+    @ColumnInfo(name = "image_urls")
+    var imageUrls: String = "" //
+    ) : Parcelable

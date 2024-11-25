@@ -35,7 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+<<<<<<< HEAD
         app:layout_constraintBottom_toTopOf="@+id/comments"
+=======
+        app:layout_constraintBottom_toTopOf="@+id/close_btn"
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_scroll">
@@ -44,27 +48,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="address"
+<<<<<<< HEAD
             android:textColor="@color/black"
+=======
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
             android:textSize="20sp" />
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="description"
+<<<<<<< HEAD
             android:textColor="@color/black"
+=======
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
             android:textSize="20sp" />
         <TextView
             android:id="@+id/price_range"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="price_range"
+<<<<<<< HEAD
             android:textColor="@color/black"
+=======
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
             android:textSize="20sp" />
         <TextView
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="phone number"
+<<<<<<< HEAD
             android:textColor="@color/black"
             android:textSize="20sp" />
     </LinearLayout>
@@ -79,6 +93,11 @@
         app:layout_constraintBottom_toTopOf="@id/restaurant_info"
         app:layout_constraintTop_toBottomOf="@+id/close_btn"/>
 
+=======
+            android:textSize="20sp" />
+    </LinearLayout>
+
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
     <Button
         android:id="@+id/close_btn"
         android:layout_width="match_parent"
@@ -87,7 +106,11 @@
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+<<<<<<< HEAD
         app:layout_constraintTop_toBottomOf="@id/comments"
+=======
+        app:layout_constraintTop_toBottomOf="@id/restaurant_info"
+>>>>>>> parent of 1315520 (Revert "panteha's first commit for milestone 2")
         app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
