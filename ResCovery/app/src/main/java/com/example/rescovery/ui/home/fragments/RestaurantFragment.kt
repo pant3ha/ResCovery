@@ -15,6 +15,7 @@ import com.example.rescovery.AppDatabase
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.google.gson.Gson
+import org.w3c.dom.Comment
 
 
 class RestaurantFragment : Fragment() {
@@ -22,6 +23,7 @@ class RestaurantFragment : Fragment() {
     private lateinit var closeBtn: Button
     private lateinit var imageAdapter: RestaurantImageAdapter
     private lateinit var recycler: RecyclerView
+    private lateinit var textRecycler: RecyclerView
     private lateinit var restaurantViewModel: RestaurantViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,7 @@ class RestaurantFragment : Fragment() {
         arguments?.let {
             restaurant = it.getParcelable(ARG_RESTAURANT)!!
         }
+        Log.d("RestaurantFragment", "Received restaurant: $restaurant")
     }
 
     override fun onCreateView(
@@ -39,13 +42,46 @@ class RestaurantFragment : Fragment() {
         recycler = view.findViewById(R.id.image_scroll)
         recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        //get images from uerInputs and from default restaurant images
+        textRecycler = view.findViewById(R.id.comments)
+        textRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         val userInputDao = AppDatabase.getInstance(requireContext()).userInputDao
         restaurantViewModel = RestaurantViewModel(userInputDao)
-        restaurantViewModel.getImagesForRestaurant(restaurant) { imageUrls ->
+
+        restaurantViewModel.getUserInputsForRestaurant(restaurant.id) { userInputs ->
+            imageAdapter = RestaurantImageAdapter(userInputs, restaurant) { userInput ->
+                val postFragment = PostFragment.newInstance(restaurant, userInput)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, postFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+            recycler.adapter = imageAdapter
+
+            val commentAdapter = RestaurantCommentAdapter(userInputs, restaurant) { userInput ->
+                val postFragment = PostFragment.newInstance(restaurant, userInput)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, postFragment)
+                    .addToBackStack(null)
+                    .commit()
+
+            }
+            textRecycler.adapter = commentAdapter
+        }
+
+        //get images from uerInputs and from default restaurant images
+        /*Log.d("RestaurantFragment", "Initializing ViewModel")
+        val userInputDao = AppDatabase.getInstance(requireContext()).userInputDao
+        restaurantViewModel = RestaurantViewModel(userInputDao)
+        Log.d("RestaurantFragment", "Fetching images for restaurantId: ${restaurant.id}")
+        restaurantViewModel.getImagesForRestaurant(restaurant.id) { imageUrls ->
+            Log.d("RestaurantFragment", "Fetched image URLs: $imageUrls")
+            if(imageUrls.isEmpty()) {
+                Log.d("RestaurantFragment", "No images to display")
+            }
             imageAdapter = RestaurantImageAdapter(imageUrls)
             recycler.adapter = imageAdapter
-        }
+        }*/
         //imageAdapter = RestaurantImageAdapter(parseImageUrls(restaurant.imageUrls))
         //recycler.adapter = imageAdapter
         view.findViewById<TextView>(R.id.name).text = restaurant.restaurantName
@@ -75,7 +111,8 @@ class RestaurantFragment : Fragment() {
         return view
     }
 
-    private fun parseImageUrls(jsonString: String): List<String> {
+    //not needed anymore
+    /*private fun parseImageUrls(jsonString: String): List<String> {
         if (jsonString.isNullOrEmpty()) {
             return emptyList() // Return an empty list if JSON string is null or empty
         }
@@ -86,7 +123,7 @@ class RestaurantFragment : Fragment() {
             emptyList()
         }
 
-    }
+    }*/
 
     companion object {
         private const val ARG_RESTAURANT = "arg_restaurant"
