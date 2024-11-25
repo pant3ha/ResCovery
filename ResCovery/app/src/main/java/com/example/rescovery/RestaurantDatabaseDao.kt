@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Delete
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 interface RestaurantDatabaseDao {
     @Insert
     suspend fun insert(restaurant: Restaurant)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(restaurants: List<Restaurant>)
 
     @Query("SELECT * FROM restaurant_table")
     fun getAllRestaurants(): Flow<List<Restaurant>> //for MAP
