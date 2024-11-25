@@ -47,6 +47,7 @@ class ProfileFragment : Fragment() {
         usersRef.child(username).get().addOnSuccessListener { snapshot ->
             binding.userName.text = snapshot.child("fullName").value.toString()
             binding.userUsername.text = "@" + username
+            if(snapshot.child("bio").exists()) binding.userBio.text = snapshot.child("bio").value.toString()
         }.addOnFailureListener {
             Toast.makeText(requireActivity(), "Failed to access database", Toast.LENGTH_SHORT).show()
         }
@@ -55,14 +56,6 @@ class ProfileFragment : Fragment() {
         binding.editProfile.setOnClickListener {
             val intent = Intent(context, AccountSettingsActivity::class.java)
             startActivity(intent)
-        }
-
-        binding.logout.setOnClickListener {
-            currentUserPref.edit().putString(Globals.PREF_CUR_USER_KEY, "").commit()
-
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish() // So users can't hit back to get to this
         }
 
         return root

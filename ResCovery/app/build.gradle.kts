@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false
     id("kotlin-kapt") //XD added
     id("kotlin-android")
     id("kotlin-parcelize")
@@ -56,6 +57,14 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.annotation)
+    //PS
+    implementation(libs.play.services.maps)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.gson)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
