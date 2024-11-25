@@ -3,7 +3,6 @@ package com.example.rescovery
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
@@ -12,9 +11,6 @@ import kotlinx.coroutines.flow.Flow
 interface UserInputDao {
     @Insert
     suspend fun insert(userInput: UserInput)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(userInputs: List<UserInput>)
 
     @Transaction
     @Query("SELECT * FROM user_input_table")
