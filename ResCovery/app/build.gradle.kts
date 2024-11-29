@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false
-    id("kotlin-kapt") //XD added
+    id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-parcelize")
 }
@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.gson)
     implementation(libs.glide)
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     annotationProcessor(libs.compiler)
 
     testImplementation(libs.junit)
