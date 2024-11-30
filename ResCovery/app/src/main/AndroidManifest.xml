@@ -49,6 +49,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
+            android:theme="@style/Theme.ResCovery"
             android:label="@string/app_name" />
     </application>
 

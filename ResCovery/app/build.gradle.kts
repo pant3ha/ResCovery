@@ -57,6 +57,16 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.annotation)
+    //PS
+    implementation(libs.play.services.maps)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.gson)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.annotation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -68,6 +78,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx: $lifecycle_version")
+
 
     // Circular ImageView for Profile image
     implementation("de.hdodenhof:circleimageview:3.1.0")

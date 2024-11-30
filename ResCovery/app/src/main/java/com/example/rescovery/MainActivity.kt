@@ -1,8 +1,8 @@
 package com.example.rescovery
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -48,6 +49,25 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+
+        // Handle Nav bar click
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+
+                // Go to Add Post Activity when add clicked
+                R.id.navigation_add -> {
+                    val intent = Intent(this, AddPostActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                // Otherwise, show other fragments
+                else -> {
+                    navController.navigate(item.itemId)
+                    true
+                }
+            }
+        }
 
         // Handle Nav bar click
         navView.setOnItemSelectedListener { item ->
