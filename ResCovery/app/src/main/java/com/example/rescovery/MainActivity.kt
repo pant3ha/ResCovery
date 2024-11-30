@@ -2,6 +2,7 @@ package com.example.rescovery
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -43,11 +44,27 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                //R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_message, R.id.navigation_profile
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Handle Nav bar click
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                // Go to Add Post Activity when add clicked
+                R.id.navigation_add -> {
+                    val intent = Intent(this, AddPostActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Otherwise, show other fragments
+                else -> {
+                    navController.navigate(item.itemId)
+                    true
+                }
+            }
+        }
 
         //____ Database Stuff___//
         appDatabase = AppDatabase.getInstance(this)
