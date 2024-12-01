@@ -117,9 +117,16 @@ class AddPostActivity : AppCompatActivity() {
                     }
 
                     // Upload Post
+                    val postId = postsRef!!.push().key
+                    if (postId == null) {
+                        Toast.makeText(this@AddPostActivity, "Couldn't get push key for posts", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+
                     val post = Post(publisherId, selectedRestaurant, enteredRating, enteredReview, base64Image)
-                    val postId = selectedRestaurant.toString() + publisherId + System.currentTimeMillis().toString()
-                    postsRef!!.child(postId).setValue(post)
+                    val postValues = post.toMap()
+
+                    postsRef!!.child(postId).updateChildren(postValues)
                         .addOnSuccessListener {
                             Toast.makeText(this@AddPostActivity, "Post Submitted", Toast.LENGTH_SHORT).show()
                             finish()
