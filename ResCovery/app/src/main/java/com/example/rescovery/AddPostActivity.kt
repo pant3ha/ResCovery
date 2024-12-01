@@ -20,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.example.rescovery.post_data.Post
+import kotlinx.coroutines.launch
 
 class AddPostActivity : AppCompatActivity() {
 
@@ -38,7 +41,6 @@ class AddPostActivity : AppCompatActivity() {
     private lateinit var submitBtn: Button
 
     // Data
-    private var myUrl = ""
     private var imageUri: Uri? = null
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
 
@@ -85,25 +87,47 @@ class AddPostActivity : AppCompatActivity() {
     }
 
     private fun uploadPost() {
-        // Get values
-        val selectedRestaurant = restaurantSpinner.selectedItemPosition
-        val enteredRating = ratingBar.rating
-        val enteredReview = review.text.toString().trim()
+        lifecycleScope.launch {
+            // Get values
+            val selectedRestaurant = restaurantSpinner.selectedItemPosition
+            val enteredRating = ratingBar.rating
+            val enteredReview = review.text.toString().trim()
 
 
-        // Check for image and restaurant, rating
-        when {
-            selectedRestaurant == 0 -> Toast.makeText(this, "Select restaurant", Toast.LENGTH_SHORT).show()
-            enteredRating < 1 -> Toast.makeText(this, "Minimum rating is 1 star", Toast.LENGTH_SHORT).show()
-            imageUri == null -> Toast.makeText(this, "Select image!", Toast.LENGTH_SHORT).show()
+            // Check for image and restaurant, rating
+            when {
+                selectedRestaurant == 0 -> Toast.makeText(this@AddPostActivity, "Select restaurant", Toast.LENGTH_SHORT).show()
+                enteredRating < 1 -> Toast.makeText(this@AddPostActivity, "Minimum rating is 1 star", Toast.LENGTH_SHORT).show()
+                imageUri == null -> Toast.makeText(this@AddPostActivity, "Select image!", Toast.LENGTH_SHORT).show()
 
-            else -> {
-                // Upload Post
-                val post = EnteredPost(selectedRestaurant, enteredRating, enteredReview, imageUri.toString())
-                postsRef!!.child(selectedRestaurant.toString() + System.currentTimeMillis().toString()).setValue(post)
+                else -> {
+                    // Convert image to base64
+                    val base64Image = ImageUtils.encode(this@AddPostActivity, imageUri!!)
+                    if (base64Image == null) {
+                        Toast.makeText(this@AddPostActivity, "Failed to process image", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
 
-                Toast.makeText(this, "Post Submitted", Toast.LENGTH_SHORT).show()
-                finish()
+                    // Get current user
+                    val currentUserPref = getSharedPreferences(Globals.PREF_CUR_USER_NAME, MODE_PRIVATE)
+                    val publisherId = currentUserPref.getString(Globals.PREF_CUR_USER_KEY, "")
+                    if (publisherId == null) {
+                        Toast.makeText(this@AddPostActivity, "Failed to identify user", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+
+                    // Upload Post
+                    val post = Post(publisherId, selectedRestaurant, enteredRating, enteredReview, base64Image)
+                    val postId = selectedRestaurant.toString() + publisherId + System.currentTimeMillis().toString()
+                    postsRef!!.child(postId).setValue(post)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@AddPostActivity, "Post Submitted", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this@AddPostActivity, "Failed to Submit post", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
         }
     }
@@ -113,10 +137,4 @@ class AddPostActivity : AppCompatActivity() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-
-    private data class EnteredPost(
-        val restaurant: Int,
-        val rating: Float,
-        val review: String,
-        val image: String)
 }
