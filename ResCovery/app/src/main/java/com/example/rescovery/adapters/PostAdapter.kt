@@ -5,22 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rescovery.ImageUtils.decode
 import com.example.rescovery.R
 import com.example.rescovery.post_data.Post
+import com.example.rescovery.ui.home.fragments.RestaurantViewModel
+import org.w3c.dom.Text
 
-class PostAdapter (private var posts: List<Post>) :  RecyclerView.Adapter<PostAdapter.ImageViewHolder> () {
+class PostAdapter (private var posts: List<Post>, private val restaurantViewModel: RestaurantViewModel, val onPostClick: ((Post) -> Unit)? = null) :  RecyclerView.Adapter<PostAdapter.ImageViewHolder> () {
 
-    var onPostClick : ((Post) -> Unit)? = null
+    //var onPostClick : ((Post) -> Unit)? = null
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val postImage: ImageView = itemView.findViewById(R.id.image_view)
+        val postImage: ImageView = itemView.findViewById(R.id.photo_container)
+        val postPublisher: TextView = itemView.findViewById(R.id.user_name)
+        val postRestaurant: TextView = itemView.findViewById(R.id.restaurant_name)
+        val postRestaurantAddress: TextView = itemView.findViewById(R.id.restaurant_address)
+        val postRating: RatingBar = itemView.findViewById(R.id.rating)
+        val postComment: TextView = itemView.findViewById(R.id.comments)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.grid_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
         return ImageViewHolder(view)
     }
 
@@ -39,6 +48,21 @@ class PostAdapter (private var posts: List<Post>) :  RecyclerView.Adapter<PostAd
             Glide.with(holder.itemView.context)
                 .load(R.drawable.placeholder_image) // Use a placeholder if decoding fails
                 .into(holder.postImage)
+        }
+        holder.postPublisher.text = post.publisher ?: "Unknown Publisher"
+        holder.postComment.text = post.review ?: "Unknown"
+        holder.postRating.rating = (post.rating)!!
+
+        post.restaurant?.let { restaurantId ->
+            restaurantViewModel.getRestaurantDetails(restaurantId)
+            restaurantViewModel.restaurant.observeForever { restaurant ->
+                if (restaurant != null) {
+                    holder.postRestaurant.text = restaurant.restaurantName
+                    holder.postRestaurantAddress.text = restaurant.restaurantAddress
+                } else {
+                    holder.postRestaurant.text = "Unknown"
+                }
+            }
         }
 
         // Handle click on the post

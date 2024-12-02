@@ -13,6 +13,15 @@ import com.example.rescovery.R
 import com.example.rescovery.adapters.PostAdapter
 import android.content.Intent
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rescovery.AppDatabase
+import com.example.rescovery.post_data.Post
+import com.example.rescovery.ui.home.fragments.PostFragment
+import com.example.rescovery.ui.home.fragments.RestaurantFragment
+import com.example.rescovery.ui.home.fragments.RestaurantViewModel
+import com.example.rescovery.ui.home.fragments.RestaurantViewModelFactory
+import com.google.firebase.database.FirebaseDatabase
 
 class DiscoveryFragment : Fragment() {
 
@@ -21,8 +30,16 @@ class DiscoveryFragment : Fragment() {
     }
 
     private val viewModel: DiscoveryViewModel by viewModels()
+    private lateinit var restaurantViewModel: RestaurantViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PostAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val restaurantDao = AppDatabase.getInstance(requireContext()).restaurantDatabaseDao
+        restaurantViewModel = ViewModelProvider(this, RestaurantViewModelFactory(restaurantDao, FirebaseDatabase.getInstance())
+        )[RestaurantViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +47,13 @@ class DiscoveryFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_discovery, container, false)
         recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        adapter = PostAdapter(emptyList())
+        adapter = PostAdapter(emptyList(), restaurantViewModel) { post ->
+            post.restaurant?.let { restaurant ->
+                openRestaurantFragment(restaurant)
+            }
+        }
         recyclerView.adapter = adapter
 
         // Show post details activity
@@ -49,5 +70,13 @@ class DiscoveryFragment : Fragment() {
         viewModel.posts.observe(viewLifecycleOwner, Observer { posts ->
             adapter.updateData(posts)
         })
+    }
+
+    private fun openRestaurantFragment(restaurantId: Int) {
+        val restaurantFragment = RestaurantFragment.newInstance(restaurantId)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, restaurantFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

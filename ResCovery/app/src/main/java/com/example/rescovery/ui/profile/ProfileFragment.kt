@@ -12,13 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rescovery.AccountSettingsActivity
+import com.example.rescovery.AppDatabase
 import com.example.rescovery.Globals
 import com.example.rescovery.LoginActivity
 import com.example.rescovery.R
 import com.example.rescovery.adapters.PostAdapter
 import com.example.rescovery.databinding.FragmentProfileBinding
+import com.example.rescovery.ui.home.fragments.RestaurantFragment
+import com.example.rescovery.ui.home.fragments.RestaurantViewModel
+import com.example.rescovery.ui.home.fragments.RestaurantViewModelFactory
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -28,9 +33,17 @@ class ProfileFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PostAdapter
     private lateinit var viewModel: ProfileViewModel
+    private lateinit var restaurantViewModel: RestaurantViewModel
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val restaurantDao = AppDatabase.getInstance(requireContext()).restaurantDatabaseDao
+        restaurantViewModel = ViewModelProvider(this, RestaurantViewModelFactory(restaurantDao, FirebaseDatabase.getInstance())
+        )[RestaurantViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,8 +63,8 @@ class ProfileFragment : Fragment() {
 
         //set up posts recycler
         recyclerView = root.findViewById(R.id.posts_container)!!
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
-        adapter = PostAdapter(emptyList())
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = PostAdapter(emptyList(), restaurantViewModel)
         recyclerView.adapter = adapter
 
         // Get current user
@@ -92,5 +105,13 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun openRestaurantFragment(restaurantId: Int) {
+        val restaurantFragment = RestaurantFragment.newInstance(restaurantId)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, restaurantFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
