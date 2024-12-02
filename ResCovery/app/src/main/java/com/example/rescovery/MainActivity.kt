@@ -23,7 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var restaurantViewModel: RestaurantViewModel //for manually entering list of restaurants
+    private lateinit var oldRestaurantViewModel: OldRestaurantViewModel
     private lateinit var restaurantRepository: RestaurantRepository
     private lateinit var userInputRepository: UserInputRepository
     private lateinit var appDatabase: AppDatabase
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         restaurantRepository = RestaurantRepository(appDatabase.restaurantDatabaseDao)
         userInputRepository = UserInputRepository(appDatabase.userInputDao, appDatabase.restaurantDatabaseDao)
         val factory = RestaurantFactory(restaurantRepository, userInputRepository)
-        restaurantViewModel = ViewModelProvider(this, factory).get(RestaurantViewModel::class.java)
+        oldRestaurantViewModel = ViewModelProvider(this, factory).get(OldRestaurantViewModel::class.java)
         //insertData()
 
         val database = AppDatabase.getInstance(this)

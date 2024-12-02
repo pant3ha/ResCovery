@@ -20,7 +20,7 @@ interface RestaurantDatabaseDao {
     fun getAllRestaurants(): Flow<List<Restaurant>> //for MAP
 
     @Query("SELECT * FROM restaurant_table WHERE id = :restaurantId")
-    fun getRestaurantById(restaurantId: Long): Restaurant?
+    suspend fun getRestaurantById(restaurantId: Long): Restaurant?
 
     @Update
     suspend fun update(restaurant: Restaurant)

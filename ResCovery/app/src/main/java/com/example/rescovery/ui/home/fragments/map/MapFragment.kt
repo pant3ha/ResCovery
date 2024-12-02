@@ -126,17 +126,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setupMarkerClickListener() {
         googleMap.setOnMarkerClickListener { marker ->
-            val restaurant = marker.tag as? Restaurant
-            restaurant?.let {
-                openRestaurantFragment(it)
+            Log.d("MapFragment", "Marker Clicked: ${marker.tag}")
+            val restaurantId = when (val tag = marker.tag) {
+                is Int -> tag
+                is Long -> tag.toInt() // Convert Long to Int
+                else -> null
+            }
+            if (restaurantId != null) {
+                openRestaurantFragment(restaurantId)
+            } else {
+                Log.e("MapFragment", "Invalid marker tag: ${marker.tag}")
             }
             true
         }
     }
 
-    private fun openRestaurantFragment(restaurant: Restaurant) {
-        val fragment = RestaurantFragment.newInstance(restaurant)
-        parentFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+    private fun openRestaurantFragment(restaurantId: Int) {
+        Log.d("MapFragment", "Opening RestaurantFragment")
+        val fragment = RestaurantFragment.newInstance(restaurantId)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun observeRestaurants() {
@@ -144,7 +155,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             restaurants.forEach { restaurant ->
                 val pos = mapViewModel.getCoordinates(restaurant.coordinates)
                 val marker = googleMap.addMarker(MarkerOptions().position(pos).title(restaurant.restaurantName).snippet(restaurant.description))
-                marker?.tag = restaurant
+                marker?.tag = restaurant.id
+                Log.d("MapFragment", "Marker added for restaurant ID: ${restaurant.id}")
+                Log.d("MapFragment", "Marker tag set: ${marker?.tag}")
             }
         }
     }
