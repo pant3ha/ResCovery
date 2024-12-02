@@ -128,7 +128,7 @@ class SignupActivity : AppCompatActivity() {
             } else {
                 // Register user
                 val defaultProfileImage = ImageUtils.encodeDrawable(this, R.drawable.profile)
-                val user = User(enteredName, enteredUsername, enteredEmail, enteredPassword, defaultProfileImage)
+                val user = User(enteredName, enteredUsername, enteredEmail, enteredPassword, "",defaultProfileImage)
                 usersRef.child(enteredUsername).setValue(user)
 
                 Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show()
