@@ -57,6 +57,7 @@ class ProfileFragment : Fragment() {
         // Get current user
         val currentUserPref = requireActivity().getSharedPreferences(Globals.PREF_CUR_USER_NAME, MODE_PRIVATE)
         val username = currentUserPref.getString(Globals.PREF_CUR_USER_KEY, "").toString()
+        println(username)
 
         usersRef.child(username).get().addOnSuccessListener { snapshot ->
             binding.userName.text = snapshot.child("fullName").value.toString()
