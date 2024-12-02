@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".ResCoveryApplication"
@@ -22,9 +24,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ResCovery"
         tools:targetApi="31">
+        <activity
+            android:name=".events.ChooseInviteesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".events.ChooseRestaurantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".events.CreateEventActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyALZtRnmF3dMZseuOsFtmZiFiBNm_m3XgU" />
+
         <activity
             android:name=".ManageFriendsActivity"
             android:exported="false" />
@@ -49,8 +62,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.ResCovery"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ResCovery" />
     </application>
 
 </manifest>
