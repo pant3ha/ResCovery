@@ -90,6 +90,7 @@ class PostFragment : Fragment() {
         return view
     }
 
+    //takes argument post of type Post so it can display the appropriate details of post
     companion object {
         private const val ARG_POST = "arg_post"
         fun newInstance(post: Post) : PostFragment {

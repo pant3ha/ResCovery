@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.launch
 
+//responsible for getting details for restaurant from firebase and room database
 class RestaurantViewModel (private val restaurantDao: RestaurantDatabaseDao, private val firebaseDatabase: FirebaseDatabase) : ViewModel() {
 
     private val _restaurant = MutableLiveData<Restaurant?>()

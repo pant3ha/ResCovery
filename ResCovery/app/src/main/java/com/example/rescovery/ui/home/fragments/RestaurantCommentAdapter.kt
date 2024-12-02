@@ -11,6 +11,7 @@ import com.example.rescovery.UserInput
 import com.example.rescovery.post_data.Post
 import com.example.rescovery.user_data.User
 
+//adapter for comment recycler in RestaurantFragment
 class RestaurantCommentAdapter(private var posts: List<Post>, private val onItemClick: (Post) -> Unit) : RecyclerView.Adapter<RestaurantCommentAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,6 +24,7 @@ class RestaurantCommentAdapter(private var posts: List<Post>, private val onItem
         return CommentViewHolder(view)
     }
 
+    //get post based on position and display its attributes
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val post = posts[position]
 

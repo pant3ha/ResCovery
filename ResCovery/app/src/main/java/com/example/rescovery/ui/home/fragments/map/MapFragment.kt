@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
+//map fragment displays a map with markers of restaurants as well as user's location
 class MapFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST_CODE = 0
     private lateinit var mapViewModel: MapViewModel
@@ -66,6 +67,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
 
+    // if the permission is granted, set up the map
     override fun onMapReady(map: GoogleMap) {
         Log.d(TAG, "Map is ready")
         googleMap = map
@@ -76,11 +78,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    //checks if locations permission has been granted
     private fun hasLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
+    //requests locations permission
     private fun requestLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions ( arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -89,6 +93,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    //gets all permission results
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -102,6 +107,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    //shows the users locations on map with blue marker and restaurants with red markers
     private fun showLocationOnMap() {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap.isMyLocationEnabled = true
@@ -111,6 +117,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         setupMarkerClickListener()
     }
 
+    //uses mapViewModel to track user's current location, zooms to user's location
     private fun observeTracking() {
         mapViewModel.currentLocation.observe(viewLifecycleOwner) { location ->
             Log.d(TAG, "current location updated: $location")
@@ -124,6 +131,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    //handles a marker being clicked -> open restaurant fragment
     private fun setupMarkerClickListener() {
         googleMap.setOnMarkerClickListener { marker ->
             Log.d("MapFragment", "Marker Clicked: ${marker.tag}")
@@ -141,6 +149,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    //opens the restaurant fragment by passing restaurantId
     private fun openRestaurantFragment(restaurantId: Int) {
         Log.d("MapFragment", "Opening RestaurantFragment")
         val fragment = RestaurantFragment.newInstance(restaurantId)
@@ -150,6 +159,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             .commit()
     }
 
+    //observes restaurants currently in room database in the beginning of initializing map
     private fun observeRestaurants() {
         mapViewModel.restaurants.observe(viewLifecycleOwner) { restaurants ->
             restaurants.forEach { restaurant ->
@@ -162,6 +172,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    //if user moves
     private fun updateCurrentMarker(location: Location) {
         val currentLatLng = LatLng(location.latitude, location.longitude)
         currentMarker?.remove()

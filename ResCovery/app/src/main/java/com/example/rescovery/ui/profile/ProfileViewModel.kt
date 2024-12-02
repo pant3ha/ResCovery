@@ -11,6 +11,7 @@ class ProfileViewModel : ViewModel() {
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> get() = _posts
 
+    //gets posts associated with a specific user by matching publisher field and username field
     fun getUserPosts(username: String) {
         val postsRef = FirebaseDatabase.getInstance().getReference("posts")
         postsRef.orderByChild("publisher").equalTo(username).get().addOnSuccessListener { snapshot ->

@@ -23,6 +23,7 @@ import com.example.rescovery.ui.home.fragments.RestaurantViewModel
 import com.example.rescovery.ui.home.fragments.RestaurantViewModelFactory
 import com.google.firebase.database.FirebaseDatabase
 
+//discovery fragment displays a recycler view of all posts made
 class DiscoveryFragment : Fragment() {
 
     companion object {
@@ -34,6 +35,7 @@ class DiscoveryFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PostAdapter
 
+    //initialize database dao and view model for restaurant details
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val restaurantDao = AppDatabase.getInstance(requireContext()).restaurantDatabaseDao
@@ -46,9 +48,11 @@ class DiscoveryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_discovery, container, false)
+        //set up recycler view
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        //call PostAdapter to handle post details for the given post
         adapter = PostAdapter(emptyList(), restaurantViewModel) { post ->
             post.restaurant?.let { restaurant ->
                 openRestaurantFragment(restaurant)
@@ -56,22 +60,18 @@ class DiscoveryFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
-        // Show post details activity
-//        adapter.onPostClick = {
-//            val intent = Intent(requireContext(), PostDetailsActivity::class.java)
-//            intent.putExtra("post", it)
-//            startActivity(intent)
-//        }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //observe view view model: getPosts()
         viewModel.posts.observe(viewLifecycleOwner, Observer { posts ->
             adapter.updateData(posts)
         })
     }
 
+    //if a post is clicked, open the corresponding restaurant fragment to display restaurant details.
     private fun openRestaurantFragment(restaurantId: Int) {
         val restaurantFragment = RestaurantFragment.newInstance(restaurantId)
         parentFragmentManager.beginTransaction()

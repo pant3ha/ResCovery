@@ -30,13 +30,16 @@ class MapViewModel(private val application: Application, private val repository:
     val restaurants: LiveData<List<Restaurant>>get() = _restaurants
 
     init {
+        //load the static restaurants
         loadRestaurants()
+        //check permissions
         if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
         } else { Log.d(TAG, "Location permission denied in ViewModel")
         Log.d(TAG, "MapViewModel opened") }
     }
 
+    //load all restaurants with the getAllRestaurants query from repository
     private fun loadRestaurants() {
         viewModelScope.launch {
             repository.getAllRestaurants().collect { restaurantList ->
@@ -46,11 +49,13 @@ class MapViewModel(private val application: Application, private val repository:
         }
     }
 
+    //translates string to lat an lng
     fun getCoordinates(coordinates: String): LatLng {
         val (lat, lng) = coordinates.split(",").map { it.trim().toDouble()}
         return LatLng(lat,lng)
     }
 
+    //users location is changed
     override fun onLocationChanged(location: Location) {
         _currentLocation.value = location
     }

@@ -14,6 +14,7 @@ import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
 import com.example.rescovery.post_data.Post
 
+//adapter for imageRecycler in restaurant fragment
 class RestaurantImageAdapter(private var posts: List<Post>, private val onItemClick: (Post) -> Unit) : RecyclerView.Adapter<RestaurantImageAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,6 +27,7 @@ class RestaurantImageAdapter(private var posts: List<Post>, private val onItemCl
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        //gets post based on position, translates the image and decodes it to display
         val post = posts[position]
         val bitmap = post.image?.let {ImageUtils.decode(it)}
         if (bitmap != null) {

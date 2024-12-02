@@ -91,9 +91,12 @@ class RestaurantFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //get restaurant id from arguments passed
         val restaurantId = arguments?.getInt(ARG_RESTAURANT) ?: return
+        //use viewmodel functions to get fields of restaurant and post
         viewModel.getRestaurantDetails(restaurantId)
         viewModel.getPostsForRestaurant(restaurantId)
+        //dynamically display the fields
         viewModel.restaurant.observe(viewLifecycleOwner) { restaurant ->
             view.findViewById<TextView>(R.id.name)?.text = restaurant?.restaurantName ?: "Unknown"
             view.findViewById<TextView>(R.id.address)?.text = restaurant?.restaurantAddress ?: "Unknown"
@@ -103,11 +106,13 @@ class RestaurantFragment : Fragment() {
         }
 
         Log.d("RestaurantFragment", "starting post receiving")
+        //responsible for getting images and comment posts for a restaurant
         viewModel.posts.observe(viewLifecycleOwner, Observer { posts ->
             Log.d("RestaurantFragment", "Posts received: ${posts.size}")
             val imagePosts = posts.filter { !it.image.isNullOrBlank() }
             Log.d("RestaurantFragment", "Image posts: ${imagePosts.size}")
 
+            //call update data to load images
             imageAdapter.updateData(imagePosts)
 
             val commentPosts = posts.filter { !it.review.isNullOrBlank()}
