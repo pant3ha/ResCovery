@@ -85,13 +85,11 @@
 
         </LinearLayout>
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Grid View"
-            android:textSize="25dp"
-            android:paddingTop="200dp"
-            android:gravity="center" />
+            android:layout_height="wrap_content"
+            android:id="@+id/posts_container" />
+
     </LinearLayout>
 
 </ScrollView>

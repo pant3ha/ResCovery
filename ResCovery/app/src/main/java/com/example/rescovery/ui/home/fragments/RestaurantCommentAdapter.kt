@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
+import com.example.rescovery.data.Post
+import com.example.rescovery.data.User
 
-class RestaurantCommentAdapter(private val comments: List<UserInput>, private val restaurant: Restaurant, private val onItemClick: (UserInput) -> Unit) : RecyclerView.Adapter<RestaurantCommentAdapter.CommentViewHolder>() {
+//adapter for comment recycler in RestaurantFragment
+class RestaurantCommentAdapter(private var posts: List<Post>, private val onItemClick: (Post) -> Unit) : RecyclerView.Adapter<RestaurantCommentAdapter.CommentViewHolder>() {
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userName: TextView = itemView.findViewById(R.id.comment_user_name)
@@ -21,15 +24,22 @@ class RestaurantCommentAdapter(private val comments: List<UserInput>, private va
         return CommentViewHolder(view)
     }
 
+    //get post based on position and display its attributes
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val userInput = comments[position]
-        holder.userName.text = userInput.userName
-        holder.commentText.text = userInput.comment
+        val post = posts[position]
+
+        holder.userName.text = post.publisher ?: "Anonymous"
+        holder.commentText.text = post.review ?: ""
 
         holder.itemView.setOnClickListener {
-            onItemClick(userInput)
+            onItemClick(post)
         }
     }
 
-    override fun getItemCount(): Int = comments.size
+    override fun getItemCount(): Int = posts.size
+
+    fun updateData(newPosts: List<Post>) {
+        posts = newPosts
+        notifyDataSetChanged()
+    }
 }

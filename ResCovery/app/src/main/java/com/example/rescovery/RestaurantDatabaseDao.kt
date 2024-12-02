@@ -16,11 +16,14 @@ interface RestaurantDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(restaurants: List<Restaurant>)
 
+    @Query("DELETE FROM restaurant_table")
+    suspend fun clearTable()
+
     @Query("SELECT * FROM restaurant_table")
     fun getAllRestaurants(): Flow<List<Restaurant>> //for MAP
 
     @Query("SELECT * FROM restaurant_table WHERE id = :restaurantId")
-    fun getRestaurantById(restaurantId: Long): Restaurant?
+    suspend fun getRestaurantById(restaurantId: Long): Restaurant?
 
     @Update
     suspend fun update(restaurant: Restaurant)

@@ -1,35 +1,26 @@
 package com.example.rescovery
 
-import android.icu.text.UnicodeSet
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RestaurantViewModel(private val restaurantRepository: RestaurantRepository, private val userInputRepository: UserInputRepository) : ViewModel() {
+class OldRestaurantViewModel(private val restaurantRepository: RestaurantRepository, private val userInputRepository: UserInputRepository) : ViewModel() {
     val allRestaurantLive: LiveData<List<Restaurant>> = restaurantRepository.allRestaurant.asLiveData()
 
     fun getAllUserInputsForRestaurant(restaurantId: Long): LiveData<List<UserInputWithRestaurant>> { //for displaying all posts for a certain restaurant
         return userInputRepository.getAllUserInputsForRestaurant(restaurantId).asLiveData()
     }
 
-    fun getAllUserInputs(): LiveData<List<UserInputWithRestaurant>> { //for displaying all user inputs for feed
-        return userInputRepository.getAllUserInputs().asLiveData()
-    }
-
-    fun getUserInputs(userId: Long): LiveData<List<UserInputWithRestaurant>> { //for displaying all inputs for a specific user for profile
-        return userInputRepository.getUserInputs(userId).asLiveData()
-    }
 
     fun getAllRestaurants(): LiveData<List<Restaurant>> { //for getting all restaurants for MAP
         return restaurantRepository.getAllRestaurants().asLiveData()
     }
 
-    fun getRestaurantById(restaurantId: Long) : Restaurant? {
+    suspend fun getRestaurantById(restaurantId: Long) : Restaurant? {
         return restaurantRepository.getRestaurantById(restaurantId)
     }
 
@@ -60,8 +51,8 @@ class RestaurantViewModel(private val restaurantRepository: RestaurantRepository
 
 class RestaurantFactory (private val restaurantRepository: RestaurantRepository, private val userInputRepository: UserInputRepository) : ViewModelProvider.Factory {
     override fun< T: ViewModel > create(modelClass: Class<T>) : T {
-        if(modelClass.isAssignableFrom(RestaurantViewModel::class.java))
-            return RestaurantViewModel(restaurantRepository, userInputRepository) as T
+        if(modelClass.isAssignableFrom(OldRestaurantViewModel::class.java))
+            return OldRestaurantViewModel(restaurantRepository, userInputRepository) as T
         throw IllegalArgumentException("Error")
     }
 }

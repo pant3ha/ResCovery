@@ -1,5 +1,6 @@
 package com.example.rescovery.ui.home.fragments
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,13 +8,14 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bumptech.glide.Glide
+import com.example.rescovery.ImageUtils
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
+import com.example.rescovery.post_data.Post
 
-class RestaurantImageAdapter(private val userInputs: List<UserInput>,
-                             private val restaurant: Restaurant,
-                             private val onItemClick: (UserInput) -> Unit) : RecyclerView.Adapter<RestaurantImageAdapter.ImageViewHolder>() {
+//adapter for imageRecycler in restaurant fragment
+class RestaurantImageAdapter(private var posts: List<Post>, private val onItemClick: (Post) -> Unit) : RecyclerView.Adapter<RestaurantImageAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.image_view)
@@ -25,12 +27,23 @@ class RestaurantImageAdapter(private val userInputs: List<UserInput>,
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val userInput = userInputs[position]
-        Glide.with(holder.imageView.context).load(userInput.photoUri).placeholder(R.drawable.placeholder_image).error(R.drawable.placeholder_image).into(holder.imageView)
+        //gets post based on position, translates the image and decodes it to display
+        val post = posts[position]
+        val bitmap = post.image?.let {ImageUtils.decode(it)}
+        if (bitmap != null) {
+            holder.imageView.setImageBitmap(bitmap)
+        } else {
+            holder.imageView.setImageResource(R.drawable.placeholder_image)
+        }
         holder.itemView.setOnClickListener {
-            onItemClick(userInput)
+            onItemClick(post)
         }
     }
 
-    override fun getItemCount(): Int = userInputs.size
+    fun updateData(newPosts: List<Post>) {
+        posts = newPosts
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int = posts.size
 }

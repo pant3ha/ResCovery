@@ -14,6 +14,7 @@ class DiscoveryViewModel : ViewModel() {
         getPosts()
     }
 
+    //gets all posts using firebase instance
     private fun getPosts() {
         val postsRef = FirebaseDatabase.getInstance().getReference("posts")
         postsRef.get().addOnSuccessListener { snapshot ->

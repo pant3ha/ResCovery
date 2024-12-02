@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false
     id("kotlin-kapt")
-    id("kotlin-android")
+    //id("kotlin-android")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
 }

@@ -15,6 +15,7 @@ import com.example.rescovery.ManageFriendsActivity
 import com.example.rescovery.R
 import com.example.rescovery.adapters.FriendRequestsListAdapter
 import com.example.rescovery.databinding.FragmentMessageBinding
+import com.example.rescovery.events.CreateEventActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -100,6 +101,12 @@ class MessageFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {}
         }
         friendsRef.addValueEventListener(friendListener)
+
+        // Create Event
+        binding.eventsEventbtn.setOnClickListener {
+            val intent = Intent(requireActivity(), CreateEventActivity::class.java)
+            startActivity(intent)
+        }
 
         return root
     }
