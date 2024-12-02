@@ -19,7 +19,7 @@ import com.example.rescovery.ImageUtils
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
-import com.example.rescovery.post_data.Post
+import com.example.rescovery.data.Post
 import com.google.firebase.database.FirebaseDatabase
 
 

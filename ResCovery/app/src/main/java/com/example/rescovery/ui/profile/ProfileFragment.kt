@@ -60,8 +60,8 @@ class ProfileFragment : Fragment() {
         val root: View = binding.root
 
         // Get info from database
-        database = FirebaseDatabase.getInstance()
-        usersRef = database.getReference("users")
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.getReference("users")
 
         //set up posts recycler
         recyclerView = root.findViewById(R.id.posts_container)!!

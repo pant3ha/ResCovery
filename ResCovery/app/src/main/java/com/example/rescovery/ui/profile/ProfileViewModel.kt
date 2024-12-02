@@ -3,7 +3,7 @@ package com.example.rescovery.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.rescovery.post_data.Post
+import com.example.rescovery.data.Post
 import com.google.firebase.database.FirebaseDatabase
 
 class ProfileViewModel : ViewModel() {

@@ -12,7 +12,7 @@ import com.example.rescovery.ImageUtils
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
-import com.example.rescovery.post_data.Post
+import com.example.rescovery.data.Post
 
 //adapter for imageRecycler in restaurant fragment
 class RestaurantImageAdapter(private var posts: List<Post>, private val onItemClick: (Post) -> Unit) : RecyclerView.Adapter<RestaurantImageAdapter.ImageViewHolder>() {
