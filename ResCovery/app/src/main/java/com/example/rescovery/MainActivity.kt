@@ -108,6 +108,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Ensure BottomNavigationView highlights the correct item when returning to MainActivity
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        // Check the current destination and update the selected item
+        val currentDestination = navController.currentDestination?.id
+        if (currentDestination == R.id.navigation_home) {
+            navView.selectedItemId = R.id.navigation_home
+        } else if (currentDestination == R.id.navigation_favorite) {
+            navView.selectedItemId = R.id.navigation_favorite
+        } else if (currentDestination == R.id.navigation_message) {
+            navView.selectedItemId = R.id.navigation_message
+        } else if (currentDestination == R.id.navigation_profile) {
+            navView.selectedItemId = R.id.navigation_profile
+        }
+    }
+
 
 
 
@@ -124,5 +144,7 @@ class MainActivity : AppCompatActivity() {
             restaurantViewModel.insertRestaurant(restaurant)
         }
     }*/
+
+
 
 }
