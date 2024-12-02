@@ -27,12 +27,19 @@ class PostAdapter (private var posts: List<Post>) :  RecyclerView.Adapter<PostAd
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val post = posts[position]
 
-        // Load the image using Glide
-        Glide.with(holder.itemView.context)
-            .asBitmap()
-            .load(decode(post.image ?: "")) // Decode Base64 string
-            .placeholder(R.drawable.placeholder_image)
-            .into(holder.postImage)
+        val decodedBitmap = decode(post.image ?: "")
+
+        // Check if decoding was successful
+        if (decodedBitmap != null) {
+            Glide.with(holder.itemView.context)
+                .load(decodedBitmap) // Directly load the decoded Bitmap
+                .placeholder(R.drawable.placeholder_image)
+                .into(holder.postImage)
+        } else {
+            Glide.with(holder.itemView.context)
+                .load(R.drawable.placeholder_image) // Use a placeholder if decoding fails
+                .into(holder.postImage)
+        }
 
         // Handle click on the post
         holder.itemView.setOnClickListener { onPostClick?.invoke(post) }

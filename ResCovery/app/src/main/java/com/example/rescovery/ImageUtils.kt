@@ -13,20 +13,24 @@ import java.io.ByteArrayOutputStream
 object ImageUtils {
 
     // Encode Image uri to Base64 string
-    fun encode(context: Context, imgUri: Uri): String? {
+    fun encode(context: Context, imgUri: Uri, maxSize: Int = 500, quality: Int = 70): String? {
         return try {
+            // Open the image input stream
             val input = context.contentResolver.openInputStream(imgUri)
             val bitmap = BitmapFactory.decodeStream(input)
 
-            // Encode image to base64 string
+            // Resize the bitmap
+            val resizedBitmap = resizeBitmap(bitmap, maxSize)
+
+            // Compress the resized bitmap
             val output = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
-            var imageBytes = output.toByteArray()
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, output) // JPEG for better compression
+            val imageBytes = output.toByteArray()
 
             // Encode ByteArray to Base64
             Base64.encodeToString(imageBytes, Base64.DEFAULT)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("ImageUtils", "Failed to encode image", e)
             null
         }
     }
@@ -43,6 +47,21 @@ object ImageUtils {
         } catch (e: Exception) {
             Log.e("ImageUtils", "Failed to decode image", e)
             return null
+        }
+    }
+
+    // Helper function to resize Bitmap
+    private fun resizeBitmap(bitmap: Bitmap, maxSize: Int): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+        val aspectRatio = width.toFloat() / height
+
+        return if (width > height) {
+            // Landscape
+            Bitmap.createScaledBitmap(bitmap, maxSize, (maxSize / aspectRatio).toInt(), true)
+        } else {
+            // Portrait or Square
+            Bitmap.createScaledBitmap(bitmap, (maxSize * aspectRatio).toInt(), maxSize, true)
         }
     }
 }
