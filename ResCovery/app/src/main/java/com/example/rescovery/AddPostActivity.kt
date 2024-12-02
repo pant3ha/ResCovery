@@ -1,10 +1,7 @@
 package com.example.rescovery
 
-import android.content.Intent
-import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.text.Layout
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -17,13 +14,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.example.rescovery.post_data.Post
+import com.example.rescovery.data.Post
 import kotlinx.coroutines.launch
 
 class AddPostActivity : AppCompatActivity() {

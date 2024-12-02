@@ -1,4 +1,4 @@
-package com.example.rescovery.user_data
+package com.example.rescovery.data
 
 data class User(
     val username: String,

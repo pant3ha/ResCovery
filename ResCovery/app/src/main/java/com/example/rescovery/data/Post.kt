@@ -1,4 +1,4 @@
-package com.example.rescovery.post_data
+package com.example.rescovery.data
 
 import android.os.Parcel
 import android.os.Parcelable
