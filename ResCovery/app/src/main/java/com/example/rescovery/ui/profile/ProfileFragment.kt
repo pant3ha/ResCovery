@@ -108,11 +108,11 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    private fun openRestaurantFragment(restaurantId: Int) {
+    /*private fun openRestaurantFragment(restaurantId: Int) {
         val restaurantFragment = RestaurantFragment.newInstance(restaurantId)
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, restaurantFragment)
             .addToBackStack(null)
             .commit()
-    }
+    }*/
 }
