@@ -1,15 +1,23 @@
 package com.example.rescovery
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.example.rescovery.ImageUtils.decode
+import com.example.rescovery.data.User
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -19,10 +27,23 @@ class AccountSettingsActivity : AppCompatActivity() {
     private lateinit var logoutBtn: Button
     private lateinit var deleteBtn: Button
     private lateinit var saveBtn: Button
+    private lateinit var editPictureText: TextView
+    private lateinit var profileImageView: ImageView
 
     private lateinit var nameEdit: EditText
     private lateinit var usernameEdit: EditText
     private lateinit var bioEdit: EditText
+
+    // Data
+    private var selectedImageUri: Uri? = null
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+
+        if (uri != null) {
+            selectedImageUri = uri
+            profileImageView.setImageURI(selectedImageUri)
+        }
+    }
+    private var currentUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +53,8 @@ class AccountSettingsActivity : AppCompatActivity() {
         logoutBtn = findViewById(R.id.profile_logout_btn)
         deleteBtn = findViewById(R.id.profile_delete_btn)
         saveBtn = findViewById(R.id.profile_save_btn)
+        editPictureText = findViewById(R.id.edit_picture_text_btn)
+        profileImageView = findViewById(R.id.profile_image)
 
         nameEdit = findViewById(R.id.profile_edit_name)
         usernameEdit = findViewById(R.id.profile_edit_username)
@@ -51,14 +74,32 @@ class AccountSettingsActivity : AppCompatActivity() {
         var bio = ""
 
         usersRef.child(username).get().addOnSuccessListener { snapshot ->
-            fullName = snapshot.child("fullName").value.toString()
-            nameEdit.setText(fullName)
-            if(snapshot.child("bio").exists()) {
-                bio = snapshot.child("bio").value.toString()
-                bioEdit.setText(bio)
+            currentUser = snapshot.getValue(User::class.java)
+
+            currentUser?.let {
+                nameEdit.setText(it.fullName)
+                usernameEdit.setText(it.username)
+                bioEdit.setText(it.bio)
+
+                //use ImageUtils to decode from string
+                val decodedBitmap = decode(currentUser!!.profileImage ?: "")
+
+                // Check if decoding was successful
+                if (decodedBitmap != null) {
+                    profileImageView.setImageBitmap(decodedBitmap)
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.profile)
+                        .into(profileImageView)
+                }
+
             }
         }
-        usernameEdit.setText(username)
+
+        // Handle profile picture change
+        editPictureText.setOnClickListener {
+            selectImage()
+        }
 
         saveBtn.setOnClickListener {
             fullName = nameEdit.text.toString().trim()
@@ -74,6 +115,16 @@ class AccountSettingsActivity : AppCompatActivity() {
                     usersRef.child(username).child("bio").removeValue()
                 } else {
                     usersRef.child(username).child("bio").setValue(bio)
+                }
+
+                // Convert the selected image to base64 and save
+                selectedImageUri?.let { uri ->
+                    val base64Image = ImageUtils.encode(this, uri)
+                    if (base64Image != null) {
+                        usersRef.child(username).child("profileImage").setValue(base64Image)
+                    } else {
+                        Toast.makeText(this, "Failed to save image!", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show()
@@ -110,5 +161,10 @@ class AccountSettingsActivity : AppCompatActivity() {
             Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    private fun selectImage() {
+        // Launch the photo picker and let the user choose only images.
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 }
