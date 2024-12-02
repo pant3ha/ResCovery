@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -25,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase
 class PostFragment : Fragment() {
     private lateinit var restaurant: Restaurant
     private lateinit var post: Post
-    private lateinit var backBtn: Button
+    private lateinit var backBtn: ImageButton
     private lateinit var imageAdapter: RestaurantImageAdapter
     private lateinit var recycler: RecyclerView
     private lateinit var restaurantViewModel: RestaurantViewModel

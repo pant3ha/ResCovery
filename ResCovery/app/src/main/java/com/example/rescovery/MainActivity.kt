@@ -100,11 +100,9 @@ class MainActivity : AppCompatActivity() {
 
         // Add data to the database
         CoroutineScope(Dispatchers.IO).launch {
-            val posts = PostData.getPosts()
+            restaurantDao.clearTable()
             val restaurants = RestaurantData.getRestaurants()
             restaurantDao.insertAll(restaurants)
-            userInputDao.insertAll(posts)
-            Log.d("MainActivity", "added default posts to database: $posts")
         }
     }
 
