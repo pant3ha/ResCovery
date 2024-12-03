@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -169,24 +170,40 @@ class AccountSettingsActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_READ_MEDIA_IMAGES = 1001
+        private const val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1002
     }
 
     private fun selectImage() {
-        // Check permission
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_MEDIA_IMAGES
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            // If permission granted, open user's gallery
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13 and above: Check READ_MEDIA_IMAGES permission
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                    REQUEST_CODE_READ_MEDIA_IMAGES
+                )
+            }
         } else {
-            // Request permission
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                REQUEST_CODE_READ_MEDIA_IMAGES
-            )
+            // Below Android 13: Check READ_EXTERNAL_STORAGE permission
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    REQUEST_CODE_READ_EXTERNAL_STORAGE
+                )
+            }
         }
     }
 
@@ -196,14 +213,15 @@ class AccountSettingsActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_READ_MEDIA_IMAGES) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // If permission granted, open user's gallery
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            } else {
-                // Permission denied, show toast message
-                Toast.makeText(this, "Permission required to select an image.", Toast.LENGTH_SHORT).show()
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            when (requestCode) {
+                REQUEST_CODE_READ_MEDIA_IMAGES, REQUEST_CODE_READ_EXTERNAL_STORAGE -> {
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
             }
+        } else {
+            // Permission denied
+            Toast.makeText(this, "Permission required to select an image.", Toast.LENGTH_SHORT).show()
         }
     }
 }
