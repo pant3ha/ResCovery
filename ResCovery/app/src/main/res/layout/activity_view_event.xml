@@ -16,7 +16,8 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:padding="30dp"
+                android:padding="20dp"
+                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -30,6 +31,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
                     android:text="Restaurant"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -39,6 +41,7 @@
                     android:id="@+id/eventview_restaurant_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
                     android:paddingBottom="20dp"
                     android:text="Restaurant Name"
                     android:textSize="18sp" />
@@ -46,6 +49,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
                     android:text="Host"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -54,6 +58,7 @@
                     android:id="@+id/eventview_host_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
                     android:paddingBottom="20dp"
                     android:text="Host Name"
                     android:textSize="18sp" />
@@ -66,6 +71,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
                         android:text="Time"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -77,6 +83,7 @@
                     android:id="@+id/eventview_time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
                     android:paddingBottom="20dp"
                     android:text="time"
                     android:textSize="18sp" />
@@ -89,6 +96,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
                         android:text="Invitees"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -98,6 +106,7 @@
 
                 <ListView
                     android:id="@+id/eventview_list"
+                    android:paddingStart="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"/>
 
