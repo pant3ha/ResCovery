@@ -53,6 +53,9 @@ class MessageFragment : Fragment() {
     private var inviteEvents: ArrayList<String> = arrayListOf()
     private var ownedEvents: ArrayList<String> = arrayListOf()
 
+    private lateinit var friendListener: ValueEventListener
+    private lateinit var eventsListener: ValueEventListener
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,8 +91,9 @@ class MessageFragment : Fragment() {
         binding.eventsFriendrequestslst.adapter = friendRequestsListAdapter
 
         // Watch for changes in database
-        val friendListener = object : ValueEventListener {
+        friendListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                if (_binding == null) return
                 println(snapshot.toString())
                 requests.clear()
                 for(child in snapshot.children) {
@@ -148,7 +152,7 @@ class MessageFragment : Fragment() {
 
 
         // Get events data
-        val eventsListener = object: ValueEventListener {
+        eventsListener = object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var ls = arrayListOf<String>()
                 for(child in snapshot.children) {
@@ -196,5 +200,9 @@ class MessageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        friendsRef.removeEventListener(friendListener)
+        usersRef.child(username).child("events").child("upcoming").removeEventListener(eventsListener)
+        usersRef.child(username).child("events").child("invited").removeEventListener(eventsListener)
+        usersRef.child(username).child("events").child("owned").removeEventListener(eventsListener)
     }
 }
