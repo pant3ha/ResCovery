@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.viewModels
@@ -28,7 +29,7 @@ import com.google.gson.Gson
 
 class RestaurantFragment : Fragment() {
     private var restaurantId: Int? = null
-    private lateinit var closeBtn: Button
+    private lateinit var closeBtn: ImageButton
     private lateinit var imageAdapter: RestaurantImageAdapter
     private lateinit var commentAdapter: RestaurantCommentAdapter
     private lateinit var recycler: RecyclerView
@@ -114,8 +115,17 @@ class RestaurantFragment : Fragment() {
             val imagePosts = posts.filter { !it.image.isNullOrBlank() }
             Log.d("RestaurantFragment", "Image posts: ${imagePosts.size}")
 
+            Log.d("RestaurantFragment", "Updating image adapter with posts: ${imagePosts.size}")
+            imagePosts.forEachIndexed { index, post ->
+                Log.d("RestaurantFragment", "Post $index: ${post.image}")
+            }
+
             //call update data to load images
             imageAdapter.updateData(imagePosts)
+
+            posts.forEachIndexed { index, post ->
+                Log.d("RestaurantFragment", "Post $index review: ${post.review}")
+            }
 
             val commentPosts = posts.filter { !it.review.isNullOrBlank()}
             Log.d("RestaurantFragment", "Comment posts: ${commentPosts.size}")

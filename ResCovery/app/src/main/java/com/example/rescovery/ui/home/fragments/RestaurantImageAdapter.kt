@@ -1,6 +1,7 @@
 package com.example.rescovery.ui.home.fragments
 
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +33,14 @@ class RestaurantImageAdapter(private var posts: List<Post>, private val onItemCl
         val bitmap = post.image?.let {ImageUtils.decode(it)}
         if (bitmap != null) {
             holder.imageView.setImageBitmap(bitmap)
+            Log.d("RestaurantImageAdapter", "Image at position $position successfully decoded.")
         } else {
             holder.imageView.setImageResource(R.drawable.placeholder_image)
+            Log.d("RestaurantImageAdapter", "Failed to decode image at position $position.")
         }
+
+        Log.d("RestaurantImageAdapter", "Binding image at position $position")
+
         holder.itemView.setOnClickListener {
             onItemClick(post)
         }
