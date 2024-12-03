@@ -12,14 +12,9 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.rescovery.user_data.User
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.rescovery.data.User
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class SignupActivity : AppCompatActivity() {
 
@@ -132,7 +127,8 @@ class SignupActivity : AppCompatActivity() {
                 Toast.makeText(this, "Username taken!", Toast.LENGTH_SHORT).show()
             } else {
                 // Register user
-                val user = EnteredUser(enteredEmail, enteredName, enteredPassword)
+                val defaultProfileImage = ImageUtils.encodeDrawable(this, R.drawable.profile)
+                val user = User(enteredName, enteredUsername, enteredEmail, enteredPassword, "",defaultProfileImage)
                 usersRef.child(enteredUsername).setValue(user)
 
                 Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show()

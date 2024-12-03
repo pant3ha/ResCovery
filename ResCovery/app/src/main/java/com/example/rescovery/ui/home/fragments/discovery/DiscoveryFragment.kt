@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rescovery.AppDatabase
-import com.example.rescovery.post_data.Post
+import com.example.rescovery.data.Post
 import com.example.rescovery.ui.home.fragments.PostFragment
 import com.example.rescovery.ui.home.fragments.RestaurantFragment
 import com.example.rescovery.ui.home.fragments.RestaurantViewModel

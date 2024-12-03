@@ -12,7 +12,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.privacysandbox.ads.adservices.adid.AdId
 import com.example.rescovery.RestaurantDatabaseDao
 import com.example.rescovery.UserInputDao
-import com.example.rescovery.post_data.Post
+import com.example.rescovery.data.Post
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.firstOrNull

@@ -35,6 +35,19 @@ object ImageUtils {
         }
     }
 
+    fun encodeDrawable(context: Context, drawableId: Int): String {
+        return try {
+            val bitmap = BitmapFactory.decodeResource(context.resources, drawableId)
+            val output = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
+            val imageBytes = output.toByteArray()
+            Base64.encodeToString(imageBytes, Base64.DEFAULT)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
     // Decode Base64 string to Bitmap
     fun decode(base64String: String): Bitmap? {
         return try {

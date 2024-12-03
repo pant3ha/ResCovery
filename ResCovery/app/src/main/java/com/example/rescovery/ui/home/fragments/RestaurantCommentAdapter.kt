@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rescovery.R
 import com.example.rescovery.Restaurant
 import com.example.rescovery.UserInput
-import com.example.rescovery.post_data.Post
-import com.example.rescovery.user_data.User
+import com.example.rescovery.data.Post
+import com.example.rescovery.data.User
 
 //adapter for comment recycler in RestaurantFragment
 class RestaurantCommentAdapter(private var posts: List<Post>, private val onItemClick: (Post) -> Unit) : RecyclerView.Adapter<RestaurantCommentAdapter.CommentViewHolder>() {
