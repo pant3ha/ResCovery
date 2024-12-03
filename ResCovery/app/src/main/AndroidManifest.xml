@@ -25,6 +25,9 @@
         android:theme="@style/Theme.ResCovery"
         tools:targetApi="31">
         <activity
+            android:name=".events.ViewEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".events.ChooseInviteesActivity"
             android:exported="false" />
         <activity
