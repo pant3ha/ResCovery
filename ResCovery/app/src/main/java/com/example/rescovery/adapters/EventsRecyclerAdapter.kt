@@ -95,13 +95,6 @@ class EventsRecyclerAdapter(
 
             holder.hostText.text = snapshot.child("hostName").value.toString()
         }
-
-        // Example: You can fetch event details from Firebase or other sources
-        holder.timeText.text = "12:00 PM" // Replace with actual data
-        holder.dateText.text = "2024-12-01" // Replace with actual data
-        holder.hostText.text = "Host Name" // Replace with actual data
-
-        // TODO: Fetch event details using Firebase database and populate views
     }
 
     override fun getItemCount(): Int {
