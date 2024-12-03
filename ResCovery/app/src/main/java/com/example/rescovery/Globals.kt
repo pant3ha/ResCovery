@@ -10,5 +10,7 @@ abstract class Globals {
         const val EVENT_ID_KEY = "event id key"
         const val EVENT_RESTAURANT_KEY = "event restaurant key"
         const val EVENT_INVITEES_KEY = "event invitees key"
+
+        const val EVENT_VIEW_ID = "event view id"
     }
 }
