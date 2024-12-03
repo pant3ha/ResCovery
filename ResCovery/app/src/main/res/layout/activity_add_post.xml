@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="16dp"
     android:padding="16dp"
+    android:fitsSystemWindows="true"
     tools:context=".AddPostActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -83,6 +84,7 @@
             android:paddingVertical="8dp"
             android:paddingHorizontal="16dp"
             android:background="@drawable/rounded_black_corner"
+            android:textColor="@color/black"
             android:hint="Share details of your own experience at this place"/>
 
         <LinearLayout
@@ -107,6 +109,7 @@
                 android:id="@+id/add_post_imageCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:textSize="16dp"
                 android:text="Add Photo"/>
         </LinearLayout>
