@@ -16,6 +16,9 @@ interface RestaurantDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(restaurants: List<Restaurant>)
 
+    @Update
+    suspend fun updateRestaurant(restaurant: Restaurant)
+
     @Query("DELETE FROM restaurant_table")
     suspend fun clearTable()
 

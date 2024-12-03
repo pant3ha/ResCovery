@@ -1,5 +1,6 @@
 package com.example.rescovery.ui.home.fragments
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ class RestaurantCommentAdapter(private var posts: List<Post>, private val onItem
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val post = posts[position]
 
+        Log.d("RestaurantCommentAdapter", "Binding comment at position $position: ${post.review}")
         holder.userName.text = post.publisher ?: "Anonymous"
         holder.commentText.text = post.review ?: ""
 
@@ -39,6 +41,10 @@ class RestaurantCommentAdapter(private var posts: List<Post>, private val onItem
     override fun getItemCount(): Int = posts.size
 
     fun updateData(newPosts: List<Post>) {
+        Log.d("RestaurantCommentAdapter", "Updating adapter with ${newPosts.size} comments.")
+        newPosts.forEachIndexed { index, post ->
+            Log.d("RestaurantCommentAdapter", "Comment $index: ${post.review}")
+        }
         posts = newPosts
         notifyDataSetChanged()
     }

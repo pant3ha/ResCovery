@@ -161,12 +161,13 @@ class CreateEventActivity : AppCompatActivity() {
             return
         }
 
-        val event = Event(restaurant.id, currentUser, time.timeInMillis)
+        val event = Event(restaurant.id, restaurant.restaurantName, currentUser, time.timeInMillis)
         eventsRef.child(eventKey).setValue(event)
-        usersRef.child(currentUser).child("events").child("owned").child(eventKey).setValue(true)
+        usersRef.child(currentUser).child("events").child("owned").child(eventKey).setValue(event.dateTime)
+        usersRef.child(currentUser).child("events").child("upcoming").child(eventKey).setValue(event.dateTime)
         for(invitee in invitees) {
             eventsRef.child(eventKey).child("invitees").child(invitee).setValue("pending")
-            usersRef.child(invitee).child("events").child("invited").child(eventKey).setValue(true)
+            usersRef.child(invitee).child("events").child("invited").child(eventKey).setValue(event.dateTime)
         }
 
         finish()

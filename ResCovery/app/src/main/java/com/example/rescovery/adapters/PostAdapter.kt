@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rescovery.ImageUtils.decode
@@ -36,6 +37,10 @@ class PostAdapter (private var posts: List<Post>, private val restaurantViewMode
     //set up values and display in appropriate views
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val post = posts[position]
+        //display user post details
+        holder.postPublisher.text = post.publisher ?: "Unknown Publisher"
+        holder.postComment.text = post.review ?: "Unknown"
+        holder.postRating.rating = (post.rating)!!
 
         //use ImageUtils to decode from string
         val decodedBitmap = decode(post.image ?: "")
@@ -51,22 +56,18 @@ class PostAdapter (private var posts: List<Post>, private val restaurantViewMode
                 .load(R.drawable.placeholder_image) // Use a placeholder if decoding fails
                 .into(holder.postImage)
         }
-        //display user post details
-        holder.postPublisher.text = post.publisher ?: "Unknown Publisher"
-        holder.postComment.text = post.review ?: "Unknown"
-        holder.postRating.rating = (post.rating)!!
 
         //get the restaurant details from the restaurantId
         post.restaurant?.let { restaurantId ->
-            restaurantViewModel.getRestaurantDetails(restaurantId)
-            restaurantViewModel.restaurant.observeForever { restaurant ->
-                if (restaurant != null) {
-                    //display restaurant details
-                    holder.postRestaurant.text = restaurant.restaurantName
-                    holder.postRestaurantAddress.text = restaurant.restaurantAddress
-                } else {
-                    holder.postRestaurant.text = "Unknown"
-                }
+            restaurantViewModel.getRestaurantDetailsCache(restaurantId)
+                .observe((holder.itemView.context as LifecycleOwner)) { restaurant ->
+                    if (restaurant != null) {
+                        holder.postRestaurant.text = restaurant.restaurantName
+                        holder.postRestaurantAddress.text = restaurant.restaurantAddress
+                    } else {
+                        holder.postRestaurant.text = "Unknown"
+                        holder.postRestaurantAddress.text = ""
+                    }
             }
         }
 

@@ -26,7 +26,21 @@ class RestaurantViewModel (private val restaurantDao: RestaurantDatabaseDao, pri
     val restaurant: MutableLiveData<Restaurant?> get() = _restaurant
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> get() = _posts
+    private val cache = mutableMapOf<Int, Restaurant?>()
 
+    fun getRestaurantDetailsCache(restaurantId: Int): LiveData<Restaurant?> {
+        val liveData = MutableLiveData<Restaurant?>()
+        if(cache.containsKey(restaurantId)) {
+            liveData.postValue(cache[restaurantId])
+        } else {
+            viewModelScope.launch {
+                val restaurant = restaurantDao.getRestaurantById(restaurantId.toLong())
+                cache[restaurantId] = restaurant
+                liveData.postValue(restaurant)
+            }
+        }
+        return liveData
+    }
     //get restaurant details:
     fun getRestaurantDetails(restaurantId: Int) {
         viewModelScope.launch {
@@ -57,6 +71,8 @@ class RestaurantViewModel (private val restaurantDao: RestaurantDatabaseDao, pri
                     }
                     Log.d("RestaurantViewModel", "Posts fetched: ${postList.size}")
                     _posts.value = postList
+                    //for rating
+                    updateOverallRating(restaurantId, postList)
                 } else {
                     Log.d("RestaurantViewModel", "No posts found for restaurantId: $restaurantId")
                     _posts.value = emptyList()
@@ -87,6 +103,25 @@ class RestaurantViewModel (private val restaurantDao: RestaurantDatabaseDao, pri
             Log.d("RestaurantViewModel", "User images extracted: $userImages")
         }
     }*/
+
+    fun updateOverallRating(restaurantId: Int, posts: List<Post>) {
+        viewModelScope.launch {
+            // Calculate the average rating
+            val averageRating = if (posts.isNotEmpty()) {
+                posts.mapNotNull { it.rating }.average()
+            } else {
+                0.0 //Default rating if no posts exist
+            }
+
+            //Update the restaurant's overall rating in the database
+            val restaurant = restaurantDao.getRestaurantById(restaurantId.toLong())
+            if (restaurant != null) {
+                restaurant.overallRating = averageRating
+                restaurantDao.updateRestaurant(restaurant)
+                _restaurant.postValue(restaurant)
+            }
+        }
+    }
 }
 
 //factory:

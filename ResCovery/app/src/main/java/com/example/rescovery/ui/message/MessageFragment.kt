@@ -10,12 +10,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rescovery.AppDatabase
 import com.example.rescovery.Globals
 import com.example.rescovery.ManageFriendsActivity
 import com.example.rescovery.R
+import com.example.rescovery.adapters.EventsRecyclerAdapter
 import com.example.rescovery.adapters.FriendRequestsListAdapter
 import com.example.rescovery.databinding.FragmentMessageBinding
 import com.example.rescovery.events.CreateEventActivity
+import com.example.rescovery.events.ViewEventActivity
+import com.example.rescovery.ui.home.fragments.RestaurantViewModel
+import com.example.rescovery.ui.home.fragments.RestaurantViewModelFactory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -37,10 +43,15 @@ class MessageFragment : Fragment() {
     // Database
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val usersRef: DatabaseReference = database.getReference("users")
+    private val eventsRef: DatabaseReference = database.getReference("events")
     private lateinit var friendsRef: DatabaseReference
 
     // Other vars
     private var requests : ArrayList<String> = arrayListOf()
+
+    private var upcomingEvents: ArrayList<String> = arrayListOf()
+    private var inviteEvents: ArrayList<String> = arrayListOf()
+    private var ownedEvents: ArrayList<String> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,9 +66,6 @@ class MessageFragment : Fragment() {
 
         // Set some of the text to invisible
         binding.textView3.visibility = View.INVISIBLE
-        binding.textView4.visibility = View.INVISIBLE
-        binding.textView5.visibility = View.INVISIBLE
-        binding.textView6.visibility = View.INVISIBLE
 
         // Current user
         currentUserPref = requireActivity().getSharedPreferences(Globals.PREF_CUR_USER_NAME, MODE_PRIVATE)
@@ -107,6 +115,80 @@ class MessageFragment : Fragment() {
             val intent = Intent(requireActivity(), CreateEventActivity::class.java)
             startActivity(intent)
         }
+
+        // Event list adapters
+        //set up databases
+        val restaurantDao = AppDatabase.getInstance(requireContext()).restaurantDatabaseDao
+        val restaurantViewModel = ViewModelProvider(this, RestaurantViewModelFactory(restaurantDao, FirebaseDatabase.getInstance())
+        )[RestaurantViewModel::class.java]
+
+        val upcomingEventsAdapter = EventsRecyclerAdapter(
+            requireActivity(),
+            restaurantViewModel,
+            upcomingEvents
+        )
+        binding.messageFragmentUpcomingEventsLs.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.messageFragmentUpcomingEventsLs.adapter = upcomingEventsAdapter
+
+        val inviteEventsAdapter = EventsRecyclerAdapter(
+            requireActivity(),
+            restaurantViewModel,
+            inviteEvents
+        )
+        binding.messageFragmentInviteEventsLs.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.messageFragmentInviteEventsLs.adapter = inviteEventsAdapter
+
+        val ownedEventsAdapter = EventsRecyclerAdapter(
+            requireActivity(),
+            restaurantViewModel,
+            ownedEvents
+        )
+        binding.messageFragmentOwnedEventsLs.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.messageFragmentOwnedEventsLs.adapter = ownedEventsAdapter
+
+
+        // Get events data
+        val eventsListener = object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var ls = arrayListOf<String>()
+                for(child in snapshot.children) {
+                    child.key?.let { ls.add(it) }
+                }
+                if(ls.isNotEmpty()) {
+                    ls = ArrayList(ls.sortedBy {
+                        snapshot.child(it).getValue(Long::class.java)
+                    })
+                }
+                snapshot.key?.let{
+                    println(snapshot.key)
+                    when(it) {
+                        "upcoming" -> {
+                            upcomingEvents.clear()
+                            upcomingEvents.addAll(ls)
+                            println(upcomingEvents)
+                            upcomingEventsAdapter.notifyDataSetChanged()
+                        }
+                        "invited" -> {
+                            inviteEvents.clear()
+                            inviteEvents.addAll(ls)
+                            inviteEventsAdapter.notifyDataSetChanged()
+                        }
+                        "owned" -> {
+                            ownedEvents.clear()
+                            ownedEvents.addAll(ls)
+                            ownedEventsAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println(error)
+            }
+        }
+        usersRef.child(username).child("events").child("upcoming").addValueEventListener(eventsListener)
+        usersRef.child(username).child("events").child("invited").addValueEventListener(eventsListener)
+        usersRef.child(username).child("events").child("owned").addValueEventListener(eventsListener)
 
         return root
     }

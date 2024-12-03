@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView.OnCloseListener
 import androidx.fragment.app.viewModels
@@ -31,7 +33,7 @@ import com.google.gson.Gson
 class RestaurantFragment : Fragment() {
     private var restaurantId: Int? = null
     private var openedFromSearch: Boolean = false
-    private lateinit var closeBtn: Button
+    private lateinit var closeBtn: ImageButton
     private lateinit var imageAdapter: RestaurantImageAdapter
     private lateinit var commentAdapter: RestaurantCommentAdapter
     private lateinit var recycler: RecyclerView
@@ -90,7 +92,6 @@ class RestaurantFragment : Fragment() {
         closeBtn.setOnClickListener {
             if (openedFromSearch) {
                 // Navigate back to SearchFragment
-                print("Here")
                 val navController = requireActivity().findNavController(R.id.nav_host_fragment_activity_main)
                 navController.navigate(R.id.navigation_search)
             } else {
@@ -116,6 +117,7 @@ class RestaurantFragment : Fragment() {
             view.findViewById<TextView>(R.id.description)?.text = restaurant?.description ?: "Unknown"
             view.findViewById<TextView>(R.id.price_range)?.text = restaurant?.priceRange ?: "Unknown"
             view.findViewById<TextView>(R.id.phone)?.text = restaurant?.phoneNumber ?: "Unknown"
+            view.findViewById<RatingBar>(R.id.overall_rating).rating = (restaurant?.overallRating ?: 5.0).toFloat()
         }
 
         Log.d("RestaurantFragment", "starting post receiving")
@@ -125,8 +127,17 @@ class RestaurantFragment : Fragment() {
             val imagePosts = posts.filter { !it.image.isNullOrBlank() }
             Log.d("RestaurantFragment", "Image posts: ${imagePosts.size}")
 
+            Log.d("RestaurantFragment", "Updating image adapter with posts: ${imagePosts.size}")
+            imagePosts.forEachIndexed { index, post ->
+                Log.d("RestaurantFragment", "Post $index: ${post.image}")
+            }
+
             //call update data to load images
             imageAdapter.updateData(imagePosts)
+
+            posts.forEachIndexed { index, post ->
+                Log.d("RestaurantFragment", "Post $index review: ${post.review}")
+            }
 
             val commentPosts = posts.filter { !it.review.isNullOrBlank()}
             Log.d("RestaurantFragment", "Comment posts: ${commentPosts.size}")
