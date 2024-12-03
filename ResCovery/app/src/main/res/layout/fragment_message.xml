@@ -69,14 +69,13 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView4"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_fragment_upcoming_events_ls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="40dp"
-            android:text="Nothing here..."
-            android:textSize="15sp" />
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            android:paddingBottom="20dp"/>
 
         <TextView
             android:id="@+id/textView"
@@ -86,14 +85,13 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView5"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_fragment_invite_events_ls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="40dp"
-            android:text="Nothing here..."
-            android:textSize="15sp" />
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            android:paddingBottom="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -102,14 +100,13 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView6"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_fragment_owned_events_ls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="40dp"
-            android:text="Nothing here..."
-            android:textSize="15sp" />
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
+            android:paddingBottom="20dp"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
