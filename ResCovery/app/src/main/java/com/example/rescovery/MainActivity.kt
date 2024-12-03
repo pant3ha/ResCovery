@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_favorite, R.id.navigation_message, R.id.navigation_profile
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_message, R.id.navigation_profile
             )
         )
         navView.setupWithNavController(navController)
@@ -117,8 +117,8 @@ class MainActivity : AppCompatActivity() {
         val currentDestination = navController.currentDestination?.id
         if (currentDestination == R.id.navigation_home) {
             navView.selectedItemId = R.id.navigation_home
-        } else if (currentDestination == R.id.navigation_favorite) {
-            navView.selectedItemId = R.id.navigation_favorite
+        } else if (currentDestination == R.id.navigation_search) {
+            navView.selectedItemId = R.id.navigation_search
         } else if (currentDestination == R.id.navigation_message) {
             navView.selectedItemId = R.id.navigation_message
         } else if (currentDestination == R.id.navigation_profile) {

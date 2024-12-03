@@ -1,5 +1,6 @@
 package com.example.rescovery.ui.home.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView.OnCloseListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
@@ -27,6 +30,7 @@ import com.google.gson.Gson
 
 class RestaurantFragment : Fragment() {
     private var restaurantId: Int? = null
+    private var openedFromSearch: Boolean = false
     private lateinit var closeBtn: Button
     private lateinit var imageAdapter: RestaurantImageAdapter
     private lateinit var commentAdapter: RestaurantCommentAdapter
@@ -39,6 +43,7 @@ class RestaurantFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        openedFromSearch = arguments?.getBoolean(ARG_FROM_SEARCH) ?: false
         restaurantId = arguments?.getInt(ARG_RESTAURANT)
         restaurantDao = AppDatabase.getInstance(requireContext()).restaurantDatabaseDao
         Log.d("RestaurantFragment", "Received restaurant: $restaurantId")
@@ -83,7 +88,15 @@ class RestaurantFragment : Fragment() {
         //close button
         closeBtn = view.findViewById(R.id.close_btn)
         closeBtn.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            if (openedFromSearch) {
+                // Navigate back to SearchFragment
+                print("Here")
+                val navController = requireActivity().findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.navigation_search)
+            } else {
+                // Simply pop back stack if not opened from Search tab
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
 
         return view
@@ -124,10 +137,13 @@ class RestaurantFragment : Fragment() {
 
     companion object {
         private const val ARG_RESTAURANT = "arg_restaurant"
-        fun newInstance(restaurantId: Int) : RestaurantFragment {
+        private const val ARG_FROM_SEARCH = "arg_from_search"
+
+        fun newInstance(restaurantId: Int, openedFromSearch: Boolean = false) : RestaurantFragment {
             val fragment = RestaurantFragment()
             val args = Bundle()
             args.putInt(ARG_RESTAURANT, restaurantId)
+            args.putBoolean(ARG_FROM_SEARCH, openedFromSearch)
             fragment.arguments = args
             return fragment
         }
