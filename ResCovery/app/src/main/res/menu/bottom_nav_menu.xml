@@ -20,8 +20,8 @@
 
     <item
         android:id="@+id/navigation_message"
-        android:icon="@drawable/message"
-        android:title="@string/title_message" />
+        android:icon="@drawable/calendar"
+        android:title="Event" />
 
     <item
         android:id="@+id/navigation_profile"
