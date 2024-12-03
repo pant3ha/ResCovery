@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -103,6 +104,7 @@ class RestaurantFragment : Fragment() {
             view.findViewById<TextView>(R.id.description)?.text = restaurant?.description ?: "Unknown"
             view.findViewById<TextView>(R.id.price_range)?.text = restaurant?.priceRange ?: "Unknown"
             view.findViewById<TextView>(R.id.phone)?.text = restaurant?.phoneNumber ?: "Unknown"
+            view.findViewById<RatingBar>(R.id.overall_rating).rating = (restaurant?.overallRating ?: 5.0).toFloat()
         }
 
         Log.d("RestaurantFragment", "starting post receiving")

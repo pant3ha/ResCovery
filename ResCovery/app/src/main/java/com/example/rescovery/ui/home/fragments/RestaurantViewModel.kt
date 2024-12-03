@@ -57,6 +57,8 @@ class RestaurantViewModel (private val restaurantDao: RestaurantDatabaseDao, pri
                     }
                     Log.d("RestaurantViewModel", "Posts fetched: ${postList.size}")
                     _posts.value = postList
+                    //for rating
+                    updateOverallRating(restaurantId, postList)
                 } else {
                     Log.d("RestaurantViewModel", "No posts found for restaurantId: $restaurantId")
                     _posts.value = emptyList()
@@ -87,6 +89,26 @@ class RestaurantViewModel (private val restaurantDao: RestaurantDatabaseDao, pri
             Log.d("RestaurantViewModel", "User images extracted: $userImages")
         }
     }*/
+
+    fun updateOverallRating(restaurantId: Int, posts: List<Post>) {
+        viewModelScope.launch {
+            // Calculate the average rating
+            val averageRating = if (posts.isNotEmpty()) {
+                posts.mapNotNull { it.rating }.average()
+            } else {
+                0.0 // Default rating if no posts exist
+            }
+
+            // Update the restaurant's overall rating in the database
+            val restaurant = restaurantDao.getRestaurantById(restaurantId.toLong())
+            if (restaurant != null) {
+                restaurant.overallRating = averageRating
+                restaurantDao.updateRestaurant(restaurant)
+                // Optionally post updated restaurant LiveData
+                _restaurant.postValue(restaurant)
+            }
+        }
+    }
 }
 
 //factory:
