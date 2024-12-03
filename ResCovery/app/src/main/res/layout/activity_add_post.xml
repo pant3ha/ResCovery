@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     android:padding="16dp"
     tools:context=".AddPostActivity">
 
@@ -26,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/add_post_close_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:src="@drawable/left"/>
 

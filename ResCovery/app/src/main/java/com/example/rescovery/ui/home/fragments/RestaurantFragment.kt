@@ -115,7 +115,7 @@ class RestaurantFragment : Fragment() {
             view.findViewById<TextView>(R.id.name)?.text = restaurant?.restaurantName ?: "Unknown"
             view.findViewById<TextView>(R.id.address)?.text = restaurant?.restaurantAddress ?: "Unknown"
             view.findViewById<TextView>(R.id.description)?.text = restaurant?.description ?: "Unknown"
-            view.findViewById<TextView>(R.id.price_range)?.text = restaurant?.priceRange ?: "Unknown"
+            view.findViewById<TextView>(R.id.price_range)?.text = "\$ ${restaurant?.priceRange}" ?: "Unknown"
             view.findViewById<TextView>(R.id.phone)?.text = restaurant?.phoneNumber ?: "Unknown"
             view.findViewById<RatingBar>(R.id.overall_rating).rating = (restaurant?.overallRating ?: 5.0).toFloat()
         }
